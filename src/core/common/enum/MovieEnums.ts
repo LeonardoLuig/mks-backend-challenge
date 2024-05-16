@@ -1,0 +1,18 @@
+export enum Genre {
+  ACTION = 'Ação',
+  ADVENTURE = 'Aventura',
+  COMEDY = 'Comédia',
+  DRAMA = 'Drama',
+  ROMANCE = 'Romance',
+  DOCUMENTARY = 'Documentário',
+  ESPIONAGE = 'Espionagem',
+  WESTERN = 'Ocidental',
+  FANTASY = 'Fantasia',
+  SCIENCE_FICTION = 'Ficção científica',
+  WAR = 'Guerra',
+  MYSTERY = 'Mistério',
+  MUSICAL = 'Musical',
+  CRIME = 'Crime',
+  TERROR = 'Terror',
+  THRILLER = 'Suspense',
+}
