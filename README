@@ -10,15 +10,32 @@
 
 # Node Version: v20.12.2
 
-# To configure the .env, use the example.env file in the project root as an example
+- Note: To configure the .env, use the example.env file in the project root as an example
 
 # Install all dependencies
 
-- npm install | npm i
+- command: npm install | npm i
 
-# Run application
+# Build application:
 
-- Typescript:
-  - npm run start:dev
-- Javascript:
-  -
+- command: npm run build
+
+# Run Typescript application:
+
+- command: npm run start:dev
+
+# Run Javascript application:
+
+- command: npm start
+
+# Run Docker
+
+- command: npm run docker:run
+
+# Run Test
+
+- command: npm run test
+
+# Run Coverage Test
+
+- command: npm run test:cov

@@ -11,7 +11,9 @@ export class ServerApplication {
   private readonly port: number = ServerApplicationConfig.PORT;
 
   public async run(): Promise<void> {
-    const app: NestExpressApplication = await NestFactory.create<NestExpressApplication>(RootModule);
+    const app: NestExpressApplication = await NestFactory.create<NestExpressApplication>(RootModule, {
+      logger: ServerApplicationConfig.LOG_LEVEL,
+    });
 
     app.enableCors({
       origin: '*',
