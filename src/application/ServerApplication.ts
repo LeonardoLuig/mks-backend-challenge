@@ -13,6 +13,10 @@ export class ServerApplication {
   public async run(): Promise<void> {
     const app: NestExpressApplication = await NestFactory.create<NestExpressApplication>(RootModule);
 
+    app.enableCors({
+      origin: '*',
+    });
+
     const logEnabled: boolean = ServerApplicationConfig.LOG_ENABLE;
     app.useLogger(logEnabled ? ServerApplicationConfig.LOG_LEVEL : logEnabled);
 

@@ -1,7 +1,8 @@
 import { UseCaseAdapterValidator } from '@core/common/adapter-validator/usecase/UseCaseAdapterValidator';
 import { GetMovieListPort } from '@core/domain/movie/port/usecase/GetMovieListPort';
+import { Optional } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { IsArray, IsInt, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsInt, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class GetMovieListAdapter extends UseCaseAdapterValidator implements GetMovieListPort {
   @IsOptional()
@@ -10,12 +11,20 @@ export class GetMovieListAdapter extends UseCaseAdapterValidator implements GetM
 
   @IsOptional()
   @IsString()
-  artist?: string;
+  public artist?: string;
 
   @IsOptional()
   @IsArray()
   @IsInt({ each: true })
-  genres?: number[];
+  public genres?: number[];
+
+  @Optional()
+  @IsNumber()
+  public limit?: number;
+
+  @Optional()
+  @IsNumber()
+  public offset?: number;
 
   public static async new(payload: GetMovieListPort) {
     const adapter: GetMovieListAdapter = plainToClass(GetMovieListAdapter, payload);

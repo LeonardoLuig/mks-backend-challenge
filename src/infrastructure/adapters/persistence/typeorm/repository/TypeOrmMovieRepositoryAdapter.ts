@@ -1,5 +1,7 @@
+import { RepositoryFindOptions } from '@core/common/persistence/RepositoryOptions';
 import { Nullable, Optional } from '@core/common/types/CommonTypes';
 import { Movie } from '@core/domain/movie/entity/Movie';
+import { MovieGenre } from '@core/domain/movie/entity/MovieGenre';
 import { IMovieRepository } from '@core/domain/movie/interfaces/persistence/IMovieRepository';
 import { TypeOrmBaseRepository } from '@infrastructure/adapters/persistence/typeorm/TypeOrmBaseRepository';
 import { TypeOrmGenre } from '@infrastructure/adapters/persistence/typeorm/entity/genre/TypeOrmGenre';
@@ -27,10 +29,18 @@ export class TypeOrmMovieRepositoryAdapter extends TypeOrmBaseRepository<TypeOrm
     return domainEntity;
   }
 
-  async findMovies(by: { title?: string; artist?: string; genres?: number[] }): Promise<Movie[]> {
+  async findMovies(by: { title?: string; artist?: string; genres?: number[] }, options: RepositoryFindOptions = {}): Promise<Movie[]> {
     const query: SelectQueryBuilder<TypeOrmMovie> = this.buildMovieQueryBuilder();
 
     this.extendQueryWithByProperties(by, query);
+
+    if (options.limit) {
+      query.limit(options.limit);
+    }
+
+    if (options.offset) {
+      query.offset(options.offset);
+    }
 
     const ormEntities: TypeOrmMovie[] = await query.getMany();
     const domainEntities: Movie[] = TypeOrmMovieMapper.toDomainEntities(ormEntities);
@@ -48,14 +58,7 @@ export class TypeOrmMovieRepositoryAdapter extends TypeOrmBaseRepository<TypeOrm
       .values([ormEntity])
       .execute();
 
-    const movieXGenre: TypeOrmMovieXGenre[] = ormEntity.genres.map((genre) => {
-      const movieXGenreMapping: TypeOrmMovieXGenre = new TypeOrmMovieXGenre();
-
-      movieXGenreMapping.movieId = ormEntity.id;
-      movieXGenreMapping.genreId = genre.id;
-
-      return movieXGenreMapping;
-    });
+    const movieXGenre: TypeOrmMovieXGenre[] = this.handleGenre(movie.getGenres(), ormEntity.id);
 
     await this.client.createQueryBuilder('movie_x_genre').insert().into(TypeOrmMovieXGenre).values(movieXGenre).execute();
 
@@ -74,14 +77,7 @@ export class TypeOrmMovieRepositoryAdapter extends TypeOrmBaseRepository<TypeOrm
       .from(TypeOrmMovieXGenre)
       .execute();
 
-    const movieXGenre: TypeOrmMovieXGenre[] = movie.getGenres().map((genre) => {
-      const movieXGenreMapping: TypeOrmMovieXGenre = new TypeOrmMovieXGenre();
-
-      movieXGenreMapping.movieId = ormEntity.id;
-      movieXGenreMapping.genreId = genre.getId();
-
-      return movieXGenreMapping;
-    });
+    const movieXGenre: TypeOrmMovieXGenre[] = this.handleGenre(movie.getGenres(), ormEntity.id);
 
     await this.client.createQueryBuilder('movie_x_genre').insert().into(TypeOrmMovieXGenre).values(movieXGenre).execute();
 
@@ -91,6 +87,17 @@ export class TypeOrmMovieRepositoryAdapter extends TypeOrmBaseRepository<TypeOrm
   async deleteMovie(movie: Movie): Promise<void> {
     const ormEntity: TypeOrmMovie = TypeOrmMovieMapper.toOrmEntity(movie);
     this.client.update(ormEntity.id, ormEntity);
+  }
+
+  private handleGenre(genres: MovieGenre[], ormEntityId: string): TypeOrmMovieXGenre[] {
+    return genres.map((genre) => {
+      const movieXGenreMapping: TypeOrmMovieXGenre = new TypeOrmMovieXGenre();
+
+      movieXGenreMapping.movieId = ormEntityId;
+      movieXGenreMapping.genreId = genre.getId();
+
+      return movieXGenreMapping;
+    });
   }
 
   private buildMovieQueryBuilder(): SelectQueryBuilder<TypeOrmMovie> {

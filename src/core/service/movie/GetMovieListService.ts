@@ -8,11 +8,14 @@ export class GetMovieListService implements IGetMovieListUseCase {
   constructor(private readonly movieRepository: IMovieRepository) {}
 
   async execute(payload: GetMovieListPort): Promise<MovieUseCaseDto[]> {
-    const movies: Movie[] = await this.movieRepository.findMovies({
-      title: payload.title,
-      artist: payload.artist,
-      genres: payload.genres,
-    });
+    const movies: Movie[] = await this.movieRepository.findMovies(
+      {
+        title: payload.title,
+        artist: payload.artist,
+        genres: payload.genres,
+      },
+      { limit: payload.limit, offset: payload.offset },
+    );
 
     return MovieUseCaseDto.newFromMovies(movies);
   }

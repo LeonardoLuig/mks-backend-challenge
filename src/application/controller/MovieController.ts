@@ -50,6 +50,8 @@ export class MovieController {
       title: body.title,
       artist: body.artist,
       genres: body.genres,
+      limit: body.limit,
+      offset: body.offset,
     });
 
     const movieList: MovieUseCaseDto[] = await this.getMovieListUseCase.execute(adapter);

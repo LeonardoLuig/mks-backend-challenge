@@ -3,10 +3,13 @@ import { NestHttpLoggingInterceptor } from '@application/interceptor/NestHttpLog
 import { TypeOrmDirectory } from '@infrastructure/adapters/persistence/typeorm/TypeOrmDirectory';
 import { DatabaseConfig } from '@infrastructure/config/DatabaseConfig';
 import { ServerApplicationConfig } from '@infrastructure/config/ServerApplicationConfig';
+import { CacheModule } from '@nestjs/cache-manager';
 import { Global, Module, Provider } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { redisStore } from 'cache-manager-redis-yet';
+import { RedisConfig } from '@infrastructure/config/RedisConfig';
 
 const providers: Provider[] = [
   {
@@ -38,7 +41,19 @@ if (ServerApplicationConfig.LOG_ENABLE) {
       synchronize: DatabaseConfig.SYNC,
       logging: DatabaseConfig.LOG_ENABLE,
     }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async () => ({
+        store: await redisStore({
+          socket: {
+            host: RedisConfig.HOST,
+            port: RedisConfig.PORT,
+          },
+        }),
+      }),
+    }),
   ],
+
   providers: [...providers],
 })
 export class InfrastructureModule {

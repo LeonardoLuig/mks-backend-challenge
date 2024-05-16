@@ -1,6 +1,4 @@
 import 'module-alias/register';
-// import dotenv from 'dotenv';
-// dotenv.config();
 
 import { ServerApplication } from '@application/ServerApplication';
 
