@@ -1,4 +1,5 @@
 import { RootModule } from '@application/di/RootModule';
+import { Optional } from '@core/common/types/CommonTypes';
 import { ServerApplicationConfig } from '@infrastructure/config/ServerApplicationConfig';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -8,7 +9,7 @@ import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 export class ServerApplication {
   private readonly host: string = ServerApplicationConfig.HOST;
 
-  private readonly port: number = ServerApplicationConfig.PORT;
+  private readonly port: number = (process.env.PORT as Optional<number>) || ServerApplicationConfig.PORT;
 
   public async run(): Promise<void> {
     const app: NestExpressApplication = await NestFactory.create<NestExpressApplication>(RootModule, {
