@@ -12,4 +12,4 @@ RUN npm run build
 
 EXPOSE 5000
 
-ENTRYPOINT ["/bin/sh", "-c", "npm run start"]
+CMD [ "npm", "start" ]
