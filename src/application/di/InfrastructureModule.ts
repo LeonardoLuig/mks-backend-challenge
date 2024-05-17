@@ -30,16 +30,18 @@ if (ServerApplicationConfig.LOG_ENABLE) {
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: DatabaseConfig.HOST,
-      port: DatabaseConfig.PORT,
-      username: DatabaseConfig.USERNAME,
-      password: DatabaseConfig.PASSWORD,
-      database: DatabaseConfig.NAME,
       entities: [`${TypeOrmDirectory}/entity/**/*{.ts,.js}`],
       migrations: [`${TypeOrmDirectory}/migration/**/*{.ts,.js}`],
       migrationsRun: true,
       synchronize: DatabaseConfig.SYNC,
       logging: DatabaseConfig.LOG_ENABLE,
+      url: DatabaseConfig.URL,
+      ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
     }),
     CacheModule.register({
       isGlobal: true,
