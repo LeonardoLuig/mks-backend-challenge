@@ -7,7 +7,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 
 export class ServerApplication {
-  private readonly host: string = ServerApplicationConfig.HOST;
+  private readonly host?: string = ServerApplicationConfig.HOST;
 
   private readonly port: number = (process.env.PORT as Optional<number>) || ServerApplicationConfig.PORT;
 
@@ -26,7 +26,7 @@ export class ServerApplication {
     this.buildAPIDocumentation(app);
     this.log();
 
-    await app.listen(this.port, this.host);
+    await app.listen(this.port);
   }
 
   private buildAPIDocumentation(app: NestExpressApplication): void {

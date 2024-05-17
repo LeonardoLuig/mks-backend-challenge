@@ -6,7 +6,7 @@ export class ServerApplicationConfig {
 
   public static readonly PORT: number = get('API_PORT').required().asPortNumber();
 
-  public static readonly HOST: string = get('API_HOST').required().asString();
+  public static readonly HOST?: string = get('API_HOST').asString();
 
   public static readonly ACCESS_TOKEN_HEADER: string = get('API_ACCESS_TOKEN_HEADER').required().asString();
 
