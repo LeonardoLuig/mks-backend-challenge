@@ -12,7 +12,11 @@
 
 - Por conta do curto prazo, não consegui realizar todos os testes unitário e nenhum teste e2e
 
-Note: A rota de listagem de todos os filmes usa o methodo post por conta do filtros!
+# Redis:
+-Eu configurei o Redis no projeto e tbm no Heroku, porém pela falta do tempo acabei não implementando de fato durante a aplicação
+
+#Rota de Listagem de Filmes:
+- A rota de listagem de filmes usa o método post por conta dos filtros!
 
 # Node Version: v20.12.2
 
