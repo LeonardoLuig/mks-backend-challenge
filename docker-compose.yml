@@ -14,10 +14,7 @@ services:
       - 5000:5000
     environment:
       - NODE_ENV=production
-      - API_LOGIN_EMAIL_FIELD=email,
-      - API_LOGIN_PASSWORD_FIELD=password,
       - API_ACCESS_TOKEN_SECRET=mksBackendChallenge
-      - API_ACCESS_TOKEN_HEADER=x-api-token
       - API_ACCESS_TOKEN_TTL_IN_HOURS=2
       - API_LOG_ENABLE=true
       - API_LOG_LEVEL=log
@@ -28,8 +25,7 @@ services:
       - DB_NAME=postgres
       - DB_LOG_ENABLE=false
       - DB_SYNC=false
-      - REDIS_PORT=6379
-      - REDIS_HOST=redis
+      - REDIS_URL=rediss://:p3c87b84481b891b1a949cf70c2952e3a48441fde5b910b3956e3e73f8c7f3f58@ec2-52-5-21-177.compute-1.amazonaws.com:17120
     networks:
       - backend_network
     restart: unless-stopped

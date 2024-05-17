@@ -8,10 +8,6 @@ export class ServerApplicationConfig {
 
   public static readonly HOST: string = get('API_HOST').required().asString();
 
-  public static readonly LOGIN_EMAIL_FIELD: string = get('API_LOGIN_EMAIL_FIELD').required().asString();
-
-  public static readonly LOGIN_PASSWORD_FIELD: string = get('API_LOGIN_PASSWORD_FIELD').required().asString();
-
   public static readonly ACCESS_TOKEN_HEADER: string = get('API_ACCESS_TOKEN_HEADER').required().asString();
 
   public static readonly ACCESS_TOKEN_SECRET: string = get('API_ACCESS_TOKEN_SECRET').required().asString();

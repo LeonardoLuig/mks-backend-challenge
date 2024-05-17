@@ -1,10 +1,8 @@
 export class UserDITokens {
-  //repository
+  // repository
   public static readonly UserRepository: unique symbol = Symbol('UserRepository');
 
   // usecases
-  public static readonly GetUserUseCase: unique symbol = Symbol('GetUserUseCase');
-
   public static readonly CreateUserUseCase: unique symbol = Symbol('CreateUserUseCase');
 
   // typeorm table source

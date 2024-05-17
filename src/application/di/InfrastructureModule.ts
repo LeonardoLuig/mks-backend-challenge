@@ -41,15 +41,11 @@ if (ServerApplicationConfig.LOG_ENABLE) {
       synchronize: DatabaseConfig.SYNC,
       logging: DatabaseConfig.LOG_ENABLE,
     }),
-    CacheModule.registerAsync({
+    CacheModule.register({
       isGlobal: true,
       useFactory: async () => ({
-        store: await redisStore({
-          socket: {
-            host: RedisConfig.HOST,
-            port: RedisConfig.PORT,
-          },
-        }),
+        store: redisStore,
+        url: RedisConfig.URL,
       }),
     }),
   ],

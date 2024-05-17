@@ -1,7 +1,6 @@
 import { UserController } from '@application/controller/UserController';
 import { UserDITokens } from '@core/domain/user/di/UserDITokens';
 import { CreateUserUseCase } from '@core/service/user/CreateUserService';
-import { GetUserService } from '@core/service/user/GetUserService';
 import { TypeOrmUser } from '@infrastructure/adapters/persistence/typeorm/entity/user/TypeOrmUser';
 import { TypeOrmUserRepositoryAdapter } from '@infrastructure/adapters/persistence/typeorm/repository/TypeOrmUserRepositoryAdapter';
 import { Module, Provider } from '@nestjs/common';
@@ -21,12 +20,6 @@ const persistenceProviders: Provider[] = [
 ];
 
 const usecaseProviders: Provider[] = [
-  {
-    provide: UserDITokens.GetUserUseCase,
-    useFactory: (userRepository) => new GetUserService(userRepository),
-    inject: [UserDITokens.UserRepository],
-  },
-
   {
     provide: UserDITokens.CreateUserUseCase,
     useFactory: (userRepository) => new CreateUserUseCase(userRepository),
