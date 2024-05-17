@@ -43,10 +43,8 @@ export class EditMovieService implements IEditMovieUseCase {
     const genres: MovieGenre[] = [];
 
     for await (const genre of payload) {
-      CoreAssert.notEmpty(
-        await this.genreRepository.countGenre({ id: genre.id }),
-        Exception.new({ code: Code.ENTITY_NOT_FOUND_ERROR, overrideMessage: `Genre ID: ${genre.id} not found.` }),
-      );
+      const doesGenreExist: boolean = !!(await this.genreRepository.countGenre({ id: genre.id }));
+      CoreAssert.isTrue(doesGenreExist, Exception.new({ code: Code.ENTITY_NOT_FOUND_ERROR, overrideMessage: `Genre ID: ${genre.id} not found.` }));
 
       genres.push(new MovieGenre(genre.id, genre.name));
     }
