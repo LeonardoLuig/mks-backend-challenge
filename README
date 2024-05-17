@@ -39,3 +39,14 @@
 # Run Coverage Test
 
 - command: npm run test:cov
+
+# On Swagger
+
+- create an user with your name, email and password
+  Note: The password is encrypted
+
+- Do login with your email and password
+
+- To verify exists Genre on create a movie, access route to get genres list
+
+Note: now you have access to protected routes
