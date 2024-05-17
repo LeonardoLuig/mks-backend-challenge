@@ -7,6 +7,7 @@ import { HttpApiResponseMovieList } from '@application/controller/doc/movie/Http
 import { CoreApiResponse } from '@core/common/api/CoreApiResponse';
 import { MovieDITokens } from '@core/domain/movie/di/MovieDITokens';
 import { MovieUseCaseDto } from '@core/domain/movie/dto/usecase/MovieUseCaseDto';
+import { MovieUseCasePaginationDto } from '@core/domain/movie/dto/usecase/MovieUseCasePaginationDto';
 import { ICreateMovieUseCase } from '@core/domain/movie/interfaces/usecase/ICreateMovieUseCase';
 import { IEditMovieUseCase } from '@core/domain/movie/interfaces/usecase/IEditMovieUseCase';
 import { IGetMovieListUseCase } from '@core/domain/movie/interfaces/usecase/IGetMovieListUseCase';
@@ -45,7 +46,7 @@ export class MovieController {
   @ApiBearerAuth()
   @ApiBody({ type: HttpApiModelGetMovieListBody })
   @ApiResponse({ status: HttpStatus.OK, type: HttpApiResponseMovieList })
-  async getMovieList(@Body() body: HttpApiModelGetMovieListBody): Promise<CoreApiResponse<MovieUseCaseDto[]>> {
+  async getMovieList(@Body() body: HttpApiModelGetMovieListBody): Promise<CoreApiResponse<MovieUseCasePaginationDto>> {
     const adapter: GetMovieListAdapter = await GetMovieListAdapter.new({
       title: body.title,
       artist: body.artist,
@@ -54,9 +55,9 @@ export class MovieController {
       offset: body.offset,
     });
 
-    const movieList: MovieUseCaseDto[] = await this.getMovieListUseCase.execute(adapter);
+    const moviePagination: MovieUseCasePaginationDto = await this.getMovieListUseCase.execute(adapter);
 
-    return CoreApiResponse.success(movieList);
+    return CoreApiResponse.success(moviePagination);
   }
 
   @Post('new')

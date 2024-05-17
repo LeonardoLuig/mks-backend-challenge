@@ -48,6 +48,14 @@ export class TypeOrmMovieRepositoryAdapter extends TypeOrmBaseRepository<TypeOrm
     return domainEntities;
   }
 
+  async countMovies(by: { title?: string; artist?: string; genres?: number[] }): Promise<number> {
+    const query: SelectQueryBuilder<TypeOrmMovie> = this.buildMovieQueryBuilder();
+
+    this.extendQueryWithByProperties(by, query);
+
+    return query.getCount();
+  }
+
   async addMovie(movie: Movie): Promise<{ id: string }> {
     const ormEntity: TypeOrmMovie = TypeOrmMovieMapper.toOrmEntity(movie);
 
