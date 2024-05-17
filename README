@@ -8,6 +8,12 @@
 - Redis: 2 anos;
 - Postgres: 3 anos;
 
+# Testes unitário/e2e
+
+- Por conta do curto prazo, não consegui realizar todos os testes unitário e nenhum teste e2e
+
+Note: A rota de listagem de todos os filmes usa o methodo post por conta do filtros!
+
 # Node Version: v20.12.2
 
 - Note: To configure the .env, use the example.env file in the project root as an example
